@@ -1,0 +1,22 @@
+{
+    "project_dir": "<your_hil_project_dir>(e.g., path/to/myhil/)",
+    "project_prefix": "<your_hil_project_dir_prefix>(e.g., myhil)",
+    "project_interface": "<your_hil_project_entry_name>(e.g., ProjectInterface)",
+    "project_interface_path": "<your_hil_project_entry_path>(e.g., path/to/myhil/path/to/ProjectIntergace.py)",
+    "hil_api_abstract": "./apiPool/abstract/api_abstracts_openai.json",
+    "hil_config_file": "./apiPool/abstract/cfg.py",
+    "hil_api_info": "./apiPool/abstract/function_info_map.json",
+    "attr_tree_path": "./apiPool/abstract/enhanced_attr_tree.json",
+    "script_output_dir": "./IR2Script/",
+
+    "ecu_source_dir": "<your_ecu_source_dir>",
+    "ecu_entry_file_path": "<your_ecu_entry_file_path>(e.g., an OS TASK function)",
+    "module_dict":{
+        "<FUNCTION_module_name>": {
+            "module_req_file": "<your_requirements_excel_file>",
+            "module_corpus_file": "./reqAugmentation/req_corpus/<FUNCTION_module_name>_corpus.json",
+            "module_config_file": "./reqAugmentation/req_corpus/<FUNCTION_module_name>Cfg.py",
+            "output_excel_file": "./result/<FUNCTION_module_name>_result.xlsx"
+        }
+    }
+}
