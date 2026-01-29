@@ -42,14 +42,14 @@ Figure above illustrates the hardware configuration in our evaluation. It includ
 │      mergeAndTopo.py		# THP summarizer
 │      
 ├─reqAugmentation
-│  │  reqExtractor.scala	# AUTOSAR Functional Modular Anaylzer
-│  │  mergeAndTopo.py		# generate modular summaries
+│  │  reqExtractor.scala	# AUTOSAR Module Anaylzer
+│  │  mergeAndTopo.py		# generate module summaries
 │  │  reqExtractor.py		# construct requirement-point corpus
 │  │  reqAugment.py			# requirement augmenter
 │  │  
 │  └─depClosureUtils
 │          genAbstract.py	# helper functions for mergeAndTopo.py
-│          getCFileDeps.py	# get modular sub-package for ECU source code
+│          getCFileDeps.py	# get module sub-package for ECU source code
 │          merge_dot_advanced.py	# for divide-and-conquer
 │          merge_function_maps.py
 |
@@ -153,13 +153,13 @@ Input:
    > python merge_function_maps.py
    ```
 
-3. Then run commands below to generate summaries for ECU FUNCTION modules
+3. Then run commands below to generate summaries for ECU modules
 
    ```bash
    > nohup python mergeAndTopo.py > log/reqExtract.log 2>&1 &
    ```
 
-4. Run `python reqExtractor.py` to extract requirement-points (`./req_corpus/FUNCTION_corpus.json`)
+4. Run `python reqExtractor.py` to extract requirement-points (`./req_corpus/module_corpus.json`)
 
 ##### Final construction step
 
@@ -176,7 +176,7 @@ Including **Requirement Augmentation**, **Requirement Decomposition** and **IR-t
 > nohup python main.py > log/process.log 2>&1 &
 ```
 
-The generated test scripts are stored in the corresponding FUNCTION module folders under the `IR2Script/` directory.
+The generated test scripts are stored in the corresponding module folders under the `IR2Script/` directory.
 
 ### Evaluation
 
@@ -188,7 +188,7 @@ To assess whether the automatically generated test scripts achieve the same test
 
 ##### a. Automatic Identification of Key Variables.
 
-For requirements in different function modules, we let the LLM parse requirement semantics based on the module call graph and the graph node function summaries, locate which functions implement the requirement, and then extract variables from these relevant functions. We denote this set as `var_source`.
+For requirements in different modules, we let the LLM parse requirement semantics based on the module call graph and the graph node function summaries, locate which functions implement the requirement, and then extract variables from these relevant functions. We denote this set as `var_source`.
 
 Next, we parse the `DWARF` debugging information and the Symbol Table from the `ELF` file. DWARF is a standard format for storing program debugging information (includes variable names, types, storage locations, function names, parameter lists, and line numbers in the source code.) It is mainly used by debuggers to build the mapping between binary instructions and the original source code, enabling source-level variable inspection. The Symbol Table stores the mapping between all global and static variables and their corresponding memory addresses (or offsets). It is used by the linker to resolve symbol references and determine the final storage locations of symbols. Since DWARF also records local variables, we select the global and static variables that have definitive memory addresses in both DWARF and the Symbol Table, and denote this set as `var_debug`.
 Finally, we take the intersection of `var_source` and `var_debug`. The variables in the intersection are the key variables to be monitored for the requirement.
